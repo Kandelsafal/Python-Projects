@@ -4,7 +4,7 @@ from utils.enums import TransactionStatus, TransactionType
 
 
 class Transaction:
-    def __init__(self, amount:float, balance_before:int, balance_after:int, transaction_type:TransactionType, receiver_account:str = None, description:str = ""):
+    def __init__(self, amount:float, balance_before:int, balance_after:int, transaction_type:TransactionType, related_account:str = None, description:str = ""):
         self.__transaction_id = uuid.uuid4()
         self.__timestamp= datetime.now()
         self.__status = TransactionStatus.PENDING
@@ -12,15 +12,15 @@ class Transaction:
         self.__balance_before = balance_before
         self.__balance_after = balance_after
         self.__transaction_type = transaction_type
-        self.__receiver_account = receiver_account
+        self.__related_account = related_account
         self.__description = description
     
     @property
     def description(self):
         return self.__description
     @property
-    def receiver_account(self):
-        return self.__receiver_account
+    def related_account(self):
+        return self.__related_account
     @property
     def transaction_type(self):
         return self.__transaction_type
@@ -61,15 +61,13 @@ class Transaction:
             f"Amount           : {self.amount}\n"
             f"Balance Before   : {self.balance_before}\n"
             f"Balance After    : {self.balance_after}\n"
-            f"Transaction Type : {self.transaction_type}\n"
+            f"Transaction Type : {self.transaction_type.value}\n"
             
         )
         if self.description :
             result += f"Description      : {self.description}"
-        if self.receiver_account:
-            result += f"Receiver Account : {self.receiver_account}\n"
+        if self.related_account:
+            result += f"Receiver Account : {self.related_account}\n"
         return result
     
 
-trans = Transaction(500, "Deposit", "Salary" )
-print(trans)

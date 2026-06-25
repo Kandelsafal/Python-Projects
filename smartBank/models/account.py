@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from smartBank.models.transcation import Transaction
+from models.transcation import Transaction
 from utils.enums import AccountStatus, TransactionType, TransactionStatus
 def generate_account_number():
     return str(uuid.uuid4())
@@ -50,7 +50,7 @@ class Account:
     def transactions(self):
         return tuple(self.__transactions)
     
-    def deposit (self, amount, description):
+    def deposit (self, amount, description = ''):
         if amount <= 0 : 
             raise ValueError("Amount must be Positive")
         
@@ -68,3 +68,90 @@ class Account:
         transaction.mark_success()
         self.__transactions.append(transaction)
         return transaction
+    
+    def withdraw (self, amount, description = ''):
+        if amount <= 0 : 
+            raise ValueError("Amount must be Positive")
+        
+        if self.balance < amount :
+            raise ValueError("Balance Not Enough")
+        
+        balance_before = self.balance
+        self.__balance -= amount
+        balance_after = self.balance
+
+        transaction = Transaction(
+            amount=amount,
+            balance_before=balance_before,
+            balance_after=balance_after,
+            transaction_type=TransactionType.WITHDRAW,
+            description=description
+        )
+        transaction.mark_success()
+        self.__transactions.append(transaction)
+        return transaction
+
+    def transfer(self, amount,destination_account, description = ''):
+        
+        if destination_account is None:
+                raise ValueError("Destination Account is required")
+        
+        if destination_account == self :
+            raise ValueError("Cannot be transferred to self")
+            
+        if amount <= 0:
+            raise ValueError("Amount must be positive")
+            
+        if self.balance < amount :
+            raise ValueError("Amount not Enough")
+            
+        sender_before = self.balance
+        receiver_before = destination_account.balance
+
+
+        try:
+            
+            self.__balance -= amount
+            destination_account.__balance += amount
+
+            sender_transaction = Transaction(
+                amount=amount,
+                balance_before=sender_before,
+                balance_after=self.__balance,
+                transaction_type=TransactionType.WITHDRAW,
+                related_account=destination_account.account_number,
+                description=description
+            )
+
+            receiver_transaction = Transaction(
+                amount=amount,
+                balance_before=receiver_before,
+                balance_after=destination_account.__balance,
+                transaction_type=TransactionType.DEPOSIT,
+                related_account=self.account_number,
+                description=description
+            )
+
+            sender_transaction.mark_success()
+            receiver_transaction.mark_success()
+
+            self.__transactions.append(sender_transaction)
+
+            destination_account.__transactions.append(
+                receiver_transaction
+            )
+
+            return (
+                sender_transaction,
+                receiver_transaction
+            )
+
+        except Exception :
+
+            self.__balance = sender_before
+            destination_account.__balance = receiver_before
+
+            raise
+        
+        
+

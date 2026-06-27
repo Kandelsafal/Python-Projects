@@ -2,7 +2,7 @@
 from models.user import User
 from models.account import Account
 from utils.enums import AccountType, AccountStatus
-
+import json
 class Bank :
     def __init__(self):
         self.__users = {}
@@ -106,3 +106,24 @@ class Bank :
             raise ValueError("Only active accounts can receive deposits.")
         return account1._transfer(amount, account2, description)
    
+    def to_dict(self):
+        users = {}
+        for user_id, user in self.__users.items():
+             
+            users[user_id] = user.to_dict()
+
+        accounts = {}
+        for account_number, account in self.__accounts.items():
+             
+            accounts[account_number] = account.to_dict()
+
+        return {
+            "users":users,
+            "accounts": accounts
+        }    
+    
+    def save(self, filename):
+        data = self.to_dict()
+
+        with open(filename, "w") as file:
+            json.dump(data, file, indent = 4)

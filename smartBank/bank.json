@@ -1,0 +1,81 @@
+{
+    "users": {
+        "4360a9b4-264f-4805-8197-35a3a51e7490": {
+            "created_date": "2026-06-27T21:32:44.217871",
+            "user_id": "4360a9b4-264f-4805-8197-35a3a51e7490",
+            "name": "Safal",
+            "email": "safal@gmail.com",
+            "phone": "9800000000",
+            "accounts": [
+                "5fd34346-8531-4a67-8dab-54f85aceb66d"
+            ]
+        },
+        "eafcebb8-0a16-4a4a-9377-a91efec143a5": {
+            "created_date": "2026-06-27T21:32:44.217905",
+            "user_id": "eafcebb8-0a16-4a4a-9377-a91efec143a5",
+            "name": "Alice",
+            "email": "alice@gmail.com",
+            "phone": "9800000001",
+            "accounts": [
+                "5b9c4f7f-9b35-4e67-ac09-b87cfcef83de"
+            ]
+        }
+    },
+    "accounts": {
+        "5fd34346-8531-4a67-8dab-54f85aceb66d": {
+            "owner_id": "4360a9b4-264f-4805-8197-35a3a51e7490",
+            "status": "Active",
+            "account_type": "Savings",
+            "balance": 700,
+            "account_number": "5fd34346-8531-4a67-8dab-54f85aceb66d",
+            "currency": "NPR",
+            "created_date": "2026-06-27T21:32:44.217918",
+            "transactions": [
+                {
+                    "transaction_id": "2d862b25-7b28-4aaa-abc4-db07683a4508",
+                    "status": "Success",
+                    "timestamp": "2026-06-27T21:32:44.217949",
+                    "transaction_type": "Deposit",
+                    "amount": 1000,
+                    "balance_before": 0,
+                    "balance_after": 1000,
+                    "related_account": null,
+                    "description": "Initial Deposit"
+                },
+                {
+                    "transaction_id": "188da11b-b53b-4b7c-a395-04b9f521feb2",
+                    "status": "Success",
+                    "timestamp": "2026-06-27T21:32:44.217972",
+                    "transaction_type": "Withdraw",
+                    "amount": 300,
+                    "balance_before": 1000,
+                    "balance_after": 700,
+                    "related_account": "5b9c4f7f-9b35-4e67-ac09-b87cfcef83de",
+                    "description": "Transfer to Alice"
+                }
+            ]
+        },
+        "5b9c4f7f-9b35-4e67-ac09-b87cfcef83de": {
+            "owner_id": "eafcebb8-0a16-4a4a-9377-a91efec143a5",
+            "status": "Active",
+            "account_type": "Current",
+            "balance": 300,
+            "account_number": "5b9c4f7f-9b35-4e67-ac09-b87cfcef83de",
+            "currency": "NPR",
+            "created_date": "2026-06-27T21:32:44.217928",
+            "transactions": [
+                {
+                    "transaction_id": "d5b4cf3c-73cc-43d3-927f-643d8213328c",
+                    "status": "Success",
+                    "timestamp": "2026-06-27T21:32:44.217981",
+                    "transaction_type": "Deposit",
+                    "amount": 300,
+                    "balance_before": 0,
+                    "balance_after": 300,
+                    "related_account": "5fd34346-8531-4a67-8dab-54f85aceb66d",
+                    "description": "Transfer to Alice"
+                }
+            ]
+        }
+    }
+}

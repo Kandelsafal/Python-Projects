@@ -50,7 +50,7 @@ class Account:
     def transactions(self):
         return tuple(self.__transactions)
     
-    def deposit (self, amount, description = ''):
+    def _deposit (self, amount, description = ''):
         if amount <= 0 : 
             raise ValueError("Amount must be Positive")
         
@@ -69,7 +69,7 @@ class Account:
         self.__transactions.append(transaction)
         return transaction
     
-    def withdraw (self, amount, description = ''):
+    def _withdraw (self, amount, description = ''):
         if amount <= 0 : 
             raise ValueError("Amount must be Positive")
         
@@ -91,7 +91,7 @@ class Account:
         self.__transactions.append(transaction)
         return transaction
 
-    def transfer(self, amount,destination_account, description = ''):
+    def _transfer(self, amount,destination_account, description = ''):
         
         if destination_account is None:
                 raise ValueError("Destination Account is required")

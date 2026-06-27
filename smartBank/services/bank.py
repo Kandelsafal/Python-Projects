@@ -1,7 +1,7 @@
 
 from models.user import User
 from models.account import Account
-
+from utils.enums import AccountType, AccountStatus
 
 class Bank :
     def __init__(self):
@@ -58,8 +58,8 @@ class Bank :
         return self.__accounts[account_number]
 
     def open_account(self, user_id, account_type):
-        if user_id not in self.__users :
-            raise ValueError("User does not exists")
+        # if user_id not in self.__users :
+        #     raise ValueError("User does not exists")
         
         user = self.find_user(user_id)
 
@@ -75,4 +75,34 @@ class Bank :
         user._add_account(account)
         return account
     
+    def deposit(self, account_number, amount,description = ""):
+        account = self.find_account(account_number)
+
+        if account.status != AccountStatus.ACTIVE:
+            raise ValueError("Only active accounts can receive deposits.")
+        return account._deposit(
+            amount,
+            description
+        )
+    
+    def withdraw(self, account_number, amount,description = ""):
+        account = self.find_account(account_number)
+
+        if account.status != AccountStatus.ACTIVE:
+            raise ValueError("Only active accounts can receive deposits.")
+        return account._withdraw(
+            amount,
+            description
+        )
+    
+    def transfer(self,sender_account_number,destination_account,amount,description = ''):
+        account1 = self.find_account(sender_account_number)
+        account2 = self.find_account(destination_account)
+
+        if account1.status != AccountStatus.ACTIVE:
+            raise ValueError("Only active accounts can receive deposits.")
+        
+        if account2.status != AccountStatus.ACTIVE:
+            raise ValueError("Only active accounts can receive deposits.")
+        return account1._transfer(amount, account2, description)
    

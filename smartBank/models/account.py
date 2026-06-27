@@ -1,20 +1,21 @@
 import uuid
+from uuid import UUID
 from datetime import datetime
 from models.transcation import Transaction
-from utils.enums import AccountStatus, TransactionType, TransactionStatus
+from utils.enums import AccountStatus, TransactionType, AccountType
 def generate_account_number():
     return str(uuid.uuid4())
 
 
 class Account:
-    def __init__(self,owner, account_type):
-        self.__balance = 0
-        self.__account_number = generate_account_number()
-        self.__created_date = datetime.now()
+    def __init__(self,owner,account_type:AccountType, account_number:UUID = None, created_date:datetime = None,status:AccountStatus = None,transactions:list = None ,balance = 0):
+        self.__balance = balance
+        self.__account_number = account_number or generate_account_number()
+        self.__created_date = created_date or datetime.now()
         self.__owner = owner
         self.__account_type = account_type
-        self.__status = AccountStatus.ACTIVE
-        self.__transactions = []
+        self.__status = status or AccountStatus.ACTIVE
+        self.__transactions = transactions or []
         self.__currency = "NPR"
 
     @property
@@ -153,5 +154,43 @@ class Account:
 
             raise
         
-        
+    def to_dict(self):
+        created_date = self.created_date.isoformat()
+        account_type = self.account_type.value
+        status = self.__status.value
+        owner = self.owner.user_id
+        transactions = []
+        for transaction in self.transactions:
+            transactions.append(transaction.to_dict())
+
+        return{
+            "owner_id" :owner,
+            "status" : status,
+            "account_type":account_type,
+            "balance":self.balance,
+            "account_number":self.account_number,
+            "currency":self.currency,
+            "created_date":created_date,
+            "transactions": transactions
+        }
+    @classmethod
+    def from_dict(cls, data, users):
+        account_number = str(UUID(data["account_number"]))
+        created_date = datetime.fromisoformat(data["created_date"])
+        status = AccountStatus(data["status"])
+        account_type = AccountType(data["account_type"])
+        owner = users[data["owner_id"]]
+        transactions = []
+        for transaction in data["transactions"]:
+            transactions.append(Transaction.from_dict(transaction))
+        return cls(
+            account_number = account_number,
+            created_date = created_date,
+            status = status,
+            account_type = account_type,
+            owner = owner,
+            balance = data["balance"],
+            transactions = transactions
+        )
+
 

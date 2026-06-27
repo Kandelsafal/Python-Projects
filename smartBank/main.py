@@ -1,62 +1,56 @@
 from services.bank import Bank
-from utils.enums import AccountType
+from models.account import Account
+from utils.enums import AccountType, TransactionType
 
 bank = Bank()
 
 
-from models.transcation import Transaction
-from utils.enums import TransactionType
-
-# Create an original transaction
-transaction = Transaction(
-    amount=1000,
-    balance_before=0,
-    balance_after=1000,
-    transaction_type=TransactionType.DEPOSIT,
-    description="Initial Deposit"
+# # Register a user
+user = bank.register_user(
+    "Safal",
+    "safal@gmail.com",
+    "9800000000"
 )
 
-print("========== ORIGINAL TRANSACTION ==========")
-print(transaction)
+# Open an account through the Bank
+account = bank.open_account(
+    user.user_id,
+    AccountType.SAVINGS
+)
+bank.deposit(
+    account.account_number,
+    1000,
+    "Initial"
+)
+# ----------------------------
+# Convert to dictionary
+# ----------------------------
+account_data = account.to_dict()
 
-# Convert object -> dictionary
-transaction_data = transaction.to_dict()
+print("Serialized Account")
+print(account_data)
 
-print("\n========== DICTIONARY ==========")
-print(transaction_data)
+# Prepare users dictionary
+# ----------------------------
+users = {
+    user.user_id: user
+}
 
-# Convert dictionary -> object
-loaded_transaction = Transaction.from_dict(transaction_data)
+# Restore Account
+# ----------------------------
+restored_account = Account.from_dict(
+    account_data,
+    users
+)
 
-print("\n========== LOADED TRANSACTION ==========")
-print(loaded_transaction)
+print("\nRestored Account")
 
-print("\n========== FIELD COMPARISON ==========")
-
-print(transaction.to_dict() == loaded_transaction.to_dict())
-
-# # Register a user
-# user1 = bank.register_user(
-#     "Safal",
-#     "safal@gmail.com",
-#     "9800000000"
-# )
-
-# user2 = bank.register_user(
-#     "Safal",
-#     "safaal@gmail.com",
-#     "9800200000"
-# )
-# # Open an account through the Bank
-# account1 = bank.open_account(
-#     user1.user_id,
-#     AccountType.SAVINGS
-# )
-# account2 = bank.open_account(
-#     user2.user_id,
-#     AccountType.SAVINGS
-# )
-
+print("Account Number :", restored_account.account_number)
+print("Owner          :", restored_account.owner.name)
+print("Balance        :", restored_account.balance)
+print("Status         :", restored_account.status)
+print("Account Type   :", restored_account.account_type)
+print("Transactions   :", len(restored_account.transactions))
 # # Deposit through the Bank
 # transaction = bank.deposit(
 #     account1.account_number,

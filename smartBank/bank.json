@@ -1,0 +1,92 @@
+{
+    "users": {
+        "d623c608-3b94-4470-94bc-88ffa52c8ad8": {
+            "created_date": "2026-06-28T10:31:19.803359",
+            "user_id": "d623c608-3b94-4470-94bc-88ffa52c8ad8",
+            "name": "Safal",
+            "email": "safal@gmail.com",
+            "phone": "9800000000",
+            "accounts": [
+                "f9970f23-0aea-4a8b-bfd0-63b0ad433954"
+            ]
+        },
+        "50ccc6fb-9133-40d9-b052-0317502c4d06": {
+            "created_date": "2026-06-28T10:31:19.803403",
+            "user_id": "50ccc6fb-9133-40d9-b052-0317502c4d06",
+            "name": "Alice",
+            "email": "alice@gmail.com",
+            "phone": "9800000001",
+            "accounts": [
+                "a92d591a-8580-40b5-884a-eaa88ab2882b"
+            ]
+        }
+    },
+    "accounts": {
+        "f9970f23-0aea-4a8b-bfd0-63b0ad433954": {
+            "owner_id": "d623c608-3b94-4470-94bc-88ffa52c8ad8",
+            "status": "Active",
+            "account_type": "Savings",
+            "balance": 600,
+            "account_number": "f9970f23-0aea-4a8b-bfd0-63b0ad433954",
+            "currency": "NPR",
+            "created_date": "2026-06-28T10:31:19.803420",
+            "transactions": [
+                {
+                    "transaction_id": "f7ca74b3-0cd4-4623-bd3d-37d0cb3923b3",
+                    "status": "Success",
+                    "timestamp": "2026-06-28T10:31:19.803452",
+                    "transaction_type": "Deposit",
+                    "amount": 1000,
+                    "balance_before": 0,
+                    "balance_after": 1000,
+                    "related_account": null,
+                    "description": "Initial Deposit"
+                },
+                {
+                    "transaction_id": "cf4ddd01-f4b4-4bed-a595-3fbfeb6ab23e",
+                    "status": "Success",
+                    "timestamp": "2026-06-28T10:31:19.803466",
+                    "transaction_type": "Withdraw",
+                    "amount": 100,
+                    "balance_before": 1000,
+                    "balance_after": 900,
+                    "related_account": null,
+                    "description": "ATM Withdrawal"
+                },
+                {
+                    "transaction_id": "5d30bd75-1060-409b-8ba5-06f4c0d8f763",
+                    "status": "Success",
+                    "timestamp": "2026-06-28T10:31:19.803478",
+                    "transaction_type": "Withdraw",
+                    "amount": 300,
+                    "balance_before": 900,
+                    "balance_after": 600,
+                    "related_account": "a92d591a-8580-40b5-884a-eaa88ab2882b",
+                    "description": "Transfer to Alice"
+                }
+            ]
+        },
+        "a92d591a-8580-40b5-884a-eaa88ab2882b": {
+            "owner_id": "50ccc6fb-9133-40d9-b052-0317502c4d06",
+            "status": "Active",
+            "account_type": "Current",
+            "balance": 300,
+            "account_number": "a92d591a-8580-40b5-884a-eaa88ab2882b",
+            "currency": "NPR",
+            "created_date": "2026-06-28T10:31:19.803435",
+            "transactions": [
+                {
+                    "transaction_id": "d599cead-c8a1-4469-9239-4b76d05252c3",
+                    "status": "Success",
+                    "timestamp": "2026-06-28T10:31:19.803483",
+                    "transaction_type": "Deposit",
+                    "amount": 300,
+                    "balance_before": 0,
+                    "balance_after": 300,
+                    "related_account": "f9970f23-0aea-4a8b-bfd0-63b0ad433954",
+                    "description": "Transfer to Alice"
+                }
+            ]
+        }
+    }
+}

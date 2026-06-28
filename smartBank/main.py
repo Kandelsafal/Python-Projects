@@ -1,59 +1,110 @@
-from models.account import Account
 from services.bank import Bank
 from utils.enums import AccountType
 
+print("=" * 60)
+print("CREATING BANK")
+print("=" * 60)
+
 bank = Bank()
 
-user = bank.register_user(
-    "SafalKandel",
+# Create users
+user1 = bank.register_user(
+    "Safal",
     "safal@gmail.com",
     "9800000000"
 )
 
+user2 = bank.register_user(
+    "Alice",
+    "alice@gmail.com",
+    "9800000001"
+)
+
+# Open accounts
 account1 = bank.open_account(
-    user.user_id,
+    user1.user_id,
     AccountType.SAVINGS
 )
 
-print("First account created:", account1.account_number)
-
 account2 = bank.open_account(
-    user.user_id,
+    user2.user_id,
     AccountType.CURRENT
 )
 
-print("Second account created:", account2.account_number)
-
-bank.open_account(
-    user.user_id,
-    AccountType.SAVINGS
+# Transactions
+bank.deposit(
+    account1.account_number,
+    1000,
+    "Initial Deposit"
 )
-# user1 = bank.register_user("Alice", "alice@gmail.com", "9800000001")
 
-# print("User 1 created:", user1.user_id)
+bank.withdraw(
+    account1.account_number,
+    100,
+    "ATM Withdrawal"
+)
 
-# user2 = bank.register_user("Bob", "alices@gmail.com", "9800000001")
+bank.transfer(
+    account1.account_number,
+    account2.account_number,
+    300,
+    "Transfer to Alice"
+)
 
-# print("User 2 created:", user2.name)
+print("\nSaving bank...")
+bank.save("bank.json")
+print("Bank saved successfully!")
 
-# account1 = Account("Safal", AccountType.SAVINGS)
-# account2 = Account("Kandel", AccountType.SAVINGS)
-# account1.deposit(
-#     amount=1000,
-#     description="Initial dep"
-# )
-# account2.deposit(
-#     amount=1000,
-#     description="Initial dep"
-# )
+# Simulate closing the application
+del bank
 
-# sender_trans, reciever_trans = account1.transfer(
-#     amount=300,
-#     destination_account= account2
-    
-# )
-# print("ACCOUNT NUMBER SENDER:", account1.account_number)
-# print("ACCOUNT NUMBER Reciever", account2.account_number)
-# print("Balance_)Sender:", account1.balance)
-# print("Balance_)Reciever:", account2.balance)
-# print("Transaction Record", sender_trans, reciever_trans)
+print("\n" + "=" * 60)
+print("LOADING BANK")
+print("=" * 60)
+
+loaded_bank = Bank.load("bank.json")
+
+print("\nBank loaded successfully!")
+loaded_bank.register_user(
+    "Safal",
+    "safal@gmail.com",
+    "9800000000"
+)
+print("\nUsers Loaded:", len(loaded_bank._Bank__users))
+print("Accounts Loaded:", len(loaded_bank._Bank__accounts))
+
+print("\n" + "=" * 60)
+print("BANK DATA")
+print("=" * 60)
+
+for user in loaded_bank._Bank__users.values():
+
+    print(f"\nUser: {user.name}")
+    print(f"User ID : {user.user_id}")
+    print(f"Email   : {user.email}")
+    print(f"Phone   : {user.phone}")
+
+    print(f"\nAccounts ({len(user.accounts)}):")
+
+    for account in user.accounts:
+
+        print("-" * 40)
+        print("Account Number :", account.account_number)
+        print("Account Type   :", account.account_type.value)
+        print("Balance        :", account.balance)
+        print("Status         :", account.status.value)
+
+        print("\nTransactions:")
+
+        for transaction in account.transactions:
+
+            print(
+                f"  {transaction.transaction_type.value:10}"
+                f" Amount: {transaction.amount:<8}"
+                f" Balance: {transaction.balance_after:<8}"
+                f" Status: {transaction.status.value}"
+            )
+
+print("\n" + "=" * 60)
+print("LOAD TEST PASSED")
+print("=" * 60)

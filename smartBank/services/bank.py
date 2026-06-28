@@ -127,3 +127,31 @@ class Bank :
 
         with open(filename, "w") as file:
             json.dump(data, file, indent = 4)
+
+    @classmethod
+    def from_dict(cls, data):
+        bank = cls()
+
+        for user_id, user_data in data["users"].items():
+            user = User.from_dict(user_data)
+            bank.__users[user_id] = user
+
+        for account_number, account_data in data["accounts"].items():
+            account = Account.from_dict(account_data, bank.__users)
+            bank.__accounts[account_number] = account
+
+        for account in bank.__accounts.values():
+            account.owner._add_account(account)
+
+        for user in bank.__users.values():
+            bank.__emails[user.email] = user.user_id
+            bank.__phones[user.phone] = user.user_id
+
+        return bank
+    
+    @classmethod
+    def load(cls, filename):
+        with open(filename, "r") as file :
+            data = json.load(file)
+
+        return  cls.from_dict(data)
